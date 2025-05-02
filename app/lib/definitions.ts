@@ -16,7 +16,7 @@ export type Customer = {
   image_url: string;
 };
 
-export type Invoice = {
+export type Invoices = {
   id: string;
   customer_id: string;
   amount: number;
