@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import postgres from "postgres";
-import { invoices, customers, revenue, users } from "../lib/placeholder-data"; // Pastikan placeholder-data.ts ada dan sesuai
+import { invoices, customers, revenue, users } from "../lib/placeholder-data"; // Pastikan path-nya benar
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
@@ -46,10 +46,10 @@ async function seedInvoices() {
   const insertedInvoices = await Promise.all(
     invoices.map(
       (invoice) => sql`
-      INSERT INTO invoices (customer_id, amount, status, date)
-      VALUES (${invoice.customer_id}, ${invoice.amount}, ${invoice.status}, ${invoice.date})
-      ON CONFLICT (id) DO NOTHING;
-    `
+        INSERT INTO invoices (customer_id, amount, status, date)
+        VALUES (${invoice.customer_id}, ${invoice.amount}, ${invoice.status}, ${invoice.date})
+        ON CONFLICT (id) DO NOTHING;
+      `
     )
   );
 
@@ -71,10 +71,10 @@ async function seedCustomers() {
   const insertedCustomers = await Promise.all(
     customers.map(
       (customer) => sql`
-      INSERT INTO customers (id, name, email, image_url)
-      VALUES (${customer.id}, ${customer.name}, ${customer.email}, ${customer.image_url})
-      ON CONFLICT (id) DO NOTHING;
-    `
+        INSERT INTO customers (id, name, email, image_url)
+        VALUES (${customer.id}, ${customer.name}, ${customer.email}, ${customer.image_url})
+        ON CONFLICT (id) DO NOTHING;
+      `
     )
   );
 
@@ -92,10 +92,10 @@ async function seedRevenue() {
   const insertedRevenue = await Promise.all(
     revenue.map(
       (rev) => sql`
-      INSERT INTO revenue (month, revenue)
-      VALUES (${rev.month}, ${rev.revenue})
-      ON CONFLICT (month) DO NOTHING;
-    `
+        INSERT INTO revenue (month, revenue)
+        VALUES (${rev.month}, ${rev.revenue})
+        ON CONFLICT (month) DO NOTHING;
+      `
     )
   );
 
@@ -106,12 +106,7 @@ export async function GET() {
   try {
     // Seed all data
     await sql.begin(async (sql) => {
-      await Promise.all([
-        seedUsers(),
-        seedCustomers(),
-        seedInvoices(),
-        seedRevenue(),
-      ]);
+      await Promise.all([seedUsers(), seedCustomers(), seedInvoices(), seedRevenue()]);
     });
 
     return new Response(
@@ -126,9 +121,7 @@ export async function GET() {
     } else {
       return new Response(
         JSON.stringify({ error: "An unexpected error occurred" }),
-        {
-          status: 500,
-        }
+        { status: 500 }
       );
     }
   }
