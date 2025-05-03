@@ -18,4 +18,4 @@ const invoices = [
   },
 ];
 
-console.log(invoices);
+export { customers, invoices };
