@@ -19,3 +19,4 @@ const invoices = [
 ];
 
 export { customers, invoices };
+export default {};
